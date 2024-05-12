@@ -1,0 +1,17 @@
+{% extends "magasin2/base.html" %}
+
+{% block title_block %}
+    <title>Edit Profile</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1>Edit Profile</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary" type="submit">Update Profile</button>
+    </form>
+</div>
+{% endblock %}

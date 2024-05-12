@@ -1,0 +1,172 @@
+{% extends "magasin2/base.html" %}
+
+{% block content %}
+<body style="background-color: #90b42382;">
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</body>
+    <div class="row">
+        <div class="col-md-12">
+            <form class="card card-sm">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col">
+                        <input type="search" placeholder="Entrez le nom du produit que vous cherchez" name="item-name" class="form-control form-control-borderless">
+                    </div>
+                    <div class="col-auto" >
+                        <button type="submit" class="btn btn-success" style="background-color: #90b423d5;">Recherche</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" >
+        {% for product in product_object %}
+        <div class="col-md-3 mb-5" >
+            <div class="card h-100"> <!-- Ajout de la classe h-100 pour fixer la hauteur -->
+                <img src="{{ product.image.url }}" alt="" class="card-img-top" style="height:300px; width:400px">
+                <div class="card-body" style="background-color: #90b423d5;">
+                    <h5 id="aa{{ product.id }}" class="card-title">{{ product.title }}</h5>
+                    <div id="price{{ product.id }}" style="color: rgb(124, 83, 7);" class="card-text">{{ product.price }} Dt</div>
+                    <!-- <a href="{{ product.id }}" class="btn btn-warning">Voir</a> -->
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'shop:soumettre_rating' product.id %}">
+                      {% csrf_token %}
+                      <div class="rate">
+                        <input type="radio" id="star5_{{ product.id }}" name="rating" value="5" {% if product.rating == 5 %} checked {% endif %}/>
+                        <label for="star5_{{ product.id }}" title="5 stars">5 stars</label>
+                        <input type="radio" id="star4_{{ product.id }}" name="rating" value="4" {% if product.rating == 4 %} checked {% endif %}/>
+                        <label for="star4_{{ product.id }}" title="4 stars">4 stars</label>
+                        <input type="radio" id="star3_{{ product.id }}" name="rating" value="3" {% if product.rating == 3 %} checked {% endif %}/>
+                        <label for="star3_{{ product.id }}" title="3 stars">3 stars</label>
+                        <input type="radio" id="star2_{{ product.id }}" name="rating" value="2" {% if product.rating == 2 %} checked {% endif %}/>
+                        <label for="star2_{{ product.id }}" title="2 stars">2 stars</label>
+                        <input type="radio" id="star1_{{ product.id }}" name="rating" value="1" {% if product.rating == 1 %} checked {% endif %}/>
+                        <label for="star1_{{ product.id }}" title="1 star">1 star</label>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Go!</button>
+                    </form>
+                    {% for rating in ratings %}
+                    {{rating.valeur}}
+                    {% endfor %}
+                    {% endif %}
+                    <button id="{{ product.id }}" class="btn ted btn-success"><i class='bx bx-cart'></i></button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <style>
+            * {
+              margin: 0;
+              padding: 0;
+            }
+            .rate {
+              float: left;
+              height: 46px;
+              padding: 0 10px;
+            }
+            .rate:not(:checked) > input {
+              position:absolute;
+              top:-9999px;
+            }
+            .rate:not(:checked) > label {
+              float:right;
+              width:1em;
+              overflow:hidden;
+              white-space:nowrap;
+              cursor:pointer;
+              font-size:30px;
+              color:#ccc;
+            }
+            .rate:not(:checked) > label:before {
+              content: '★ ';
+            }
+            .rate > input:checked ~ label {
+              color: #ffc700;    
+            }
+            .rate:not(:checked) > label:hover,
+            .rate:not(:checked) > label:hover ~ label {
+              color: #deb217;  
+            }
+            .rate > input:checked + label:hover,
+            .rate > input:checked + label:hover ~ label,
+            .rate > input:checked ~ label:hover,
+            .rate > input:checked ~ label:hover ~ label,
+            .rate > label:hover ~ input:checked ~ label {
+              color: #c59b08;
+            }
+          </style>
+    </div>
+    
+
+    <div class="row mt-3">
+        <div class="col-md-3 offset-md-4">
+            <ul class="pagination">
+                {% if product_object.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ product_object.previous_page_number }}">Precedent</a>
+                    </li>
+                {% endif %}    
+
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ product_object.number }}">{{ product_object.number }}</a>
+                    </li>
+
+                {% if product_object.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ product_object.next_page_number }}">Suivant</a>
+                    </li>
+                {% endif %} 
+
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        console.log('Juste pour tester ');
+        if(localStorage.getItem('panier') == null){
+            var panier = {};
+        }else{
+            panier = JSON.parse(localStorage.getItem('panier'));
+        }
+        $(document).on('click', '.ted', function(){
+            console.log('ajouter');
+            var item_id = this.id.toString();
+            console.log(item_id);
+            if(panier[item_id] != undefined){
+                quantite = panier[item_id][0] +1 ;
+                panier[item_id][0] = quantite;
+                panier[item_id][2] += parseFloat(document.getElementById("price"+item_id).innerHTML);
+            }else{
+                quantite = 1;
+                prix = parseFloat(document.getElementById("price"+item_id).innerHTML);
+                nom =  document.getElementById("aa"+item_id).innerHTML;
+                panier[item_id] = [quantite, nom, prix ];
+                
+            }
+            console.log(panier);
+            localStorage.setItem('panier', JSON.stringify(panier));
+            document.getElementById("panier").innerHTML ="Panier("+ Object.keys(panier).length+")";
+            
+        });
+        AfficherList(panier);
+        function AfficherList(panier){
+            var panierString = " ";
+            panierString += "<h5>Voici votre liste</h5>";
+            var index = 1;
+            for(var x in panier){
+                panierString += index;
+                panierString += document.getElementById("aa"+x).innerHTML + " Qte: "+ panier[x][0] + "</br>";
+                index +=1;
+            }
+            panierString += "<a href='{% url 'shop:checkout' %}'  class='btn btn-primary'>Checkout</a>";
+            $('[data-toggle="popover"]').popover();
+            document.getElementById('panier').setAttribute('data-content', panierString);
+        }
+
+    </script>
+
+{% endblock %}

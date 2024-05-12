@@ -1,0 +1,22 @@
+{% extends "magasin2/base.html" %}
+{% block content %}
+<body style="background-color: #90b42382;">
+  
+</body>
+<!-- <div class="row">
+    <div class="col-md-12">
+        <h3 class="text-dark text-center bg-warning">Salut Mr/Mrs {{ nom }}</h3>
+        <h4 class="text-muted">Merci de nous faire confiance Mr/Mrs {{ nom }}. Nous avons recu votre commande vous seriez livrez dans un delai de 1 jour.</h4>
+    </div>
+</div> -->
+<center>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="font-size: 40px;">
+        <input type="hidden" name="cmd" value="_s-xclick" />
+        <input type="hidden" name="hosted_button_id" value="F7X8B2QCGSADJ" />
+        <input type="hidden" name="currency_code" value="USD" />
+        <input type="image" src="https://www.paypalobjects.com/fr_XC/i/btn/btn_paynow_SM.gif" border="0" name="submit" title="PayPal, votre réflexe sécurité pour payer en ligne." alt="Acheter" />
+      </form>
+</center>
+
+
+{% endblock %}

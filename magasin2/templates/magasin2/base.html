@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+  /* Style pour la navbar */
+  .navbar {
+    background-color: #f8f9fa; /* Couleur de fond */
+    padding: 1rem 0; /* Espacement intérieur */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre légère */
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem; /* Taille de police du logo */
+    color: #343a40; /* Couleur du texte */
+    font-weight: bold; /* Gras */
+  }
+
+  .navbar-nav .nav-item .nav-link {
+    color: #343a40; /* Couleur du texte des liens */
+ /* Gras */
+  }
+
+  .nav-link:hover {
+    color: #007bff; /* Couleur du texte au survol */
+  }
+
+  .btn-secondary {
+    background-color: #ffc107; /* Couleur de fond jaune */
+    color: #343a40; /* Couleur du texte */
+     /* Gras */
+    transition: background-color 0.3s ease; /* Transition fluide */
+  }
+
+  .btn-secondary:hover {
+    background-color: #ffca28; /* Couleur de fond jaune au survol */
+    color: #343a40; /* Couleur du texte */
+  }
+</style>
+</head>
+<body >
+                <nav class="navbar navbar-expand-lg navbar-dark shadow-5-strong" style="background-color: #90b423;">
+                    <img src="{% static 'css/candy.png' %}" alt="" style="width:70px;">
+                    <a class="navbar-brand" href="{% url 'shop:ind' %}" style="color: black; font-family:'Courier New', Courier, monospace">Candy Shop</a>
+                    
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                      <ul class="navbar-nav">
+                        <li class="nav-item active">
+                          <a class="nav-link" href="{% url 'shop:home' %}" style="color: black; font-family:'Courier New', Courier, monospace" >Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <button id="panier" type="button" class="btn btn-secondary border-0" style="background-color: #90b423; color: black; font-family:'Courier New', Courier, monospace" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+                                <img src="{% static 'css/panier.png' %}" alt="" style="width:40px;">
+                                Panier(0)
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link " href="{% url 'index' %}" tabindex="-1" aria-disabled="true"style="color: black; font-family:'Courier New', Courier, monospace">retourner</a>
+                        </li>
+                        <!-- <li class="nav-item active">
+                          <a class="nav-link" href="{% url 'shop:checkout' %}" style="color: #343a40;" >Checkout</a>
+                        </li> -->
+                      </ul>
+                      
+                      <ul class="navbar-nav ml-auto">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item active">
+                        <a class="nav-link" href="#" style="font-size: 25px;">{{user}},</a>
+                        </li>
+                        <li class="nav-item active">
+                          <a class="nav-link" href="{% url 'shop:edit_profile' %}"><i class='bx bx-edit-alt' style="font-size: 40px;"></i></a>
+                          </li>
+                        <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'shop:logout' %}"><i class='bx bx-log-in-circle' style="font-size: 40px;"></i></a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'shop:login' %}"><i class="fa-solid fa-arrow-right-to-bracket " style="font-size: 40px;"></i></a>
+                        </li>
+                        <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'shop:register' %}"><i class="fa-solid fa-user-plus" style="font-size: 40px;"></i></a>
+                        </li>
+                        {% endif %}
+                    </ul> 
+                   
+                    </div>
+                  </nav>
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+{% block js %}{% endblock %}
+</html>

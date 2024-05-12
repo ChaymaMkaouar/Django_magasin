@@ -1,0 +1,27 @@
+{% extends 'Magfum/Admin.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="text-center">
+                <h2>Ajouter Fournisseur</h2>
+            </div>
+            <form method='POST' class="post-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .post-form {
+        border: 2px solid #ccc; 
+        border-radius: 5px; 
+         background-color: #f8f9fab5;
+        padding: 20px; 
+    }
+</style>
+{% endblock %}

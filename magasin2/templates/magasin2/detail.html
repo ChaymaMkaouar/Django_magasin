@@ -1,0 +1,25 @@
+{% extends 'magasin2/base.html' %}
+<body style="background-color: #90b42382;">
+  
+</body>
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="text-center">
+                <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.title }}">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="text-warning display-3 mb-3">
+                {{ product.title }}
+            </div>
+            <div class="text-danger mb-3">
+               Prix: ${{ product.price }}
+            </div>
+            <div class="mb-3">
+                <p>{{ product.description }}</p>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
