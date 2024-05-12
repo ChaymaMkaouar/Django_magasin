@@ -1,0 +1,3 @@
+#bod {
+    background-image: url("{% static 'back0.jpg' %}");
+}
