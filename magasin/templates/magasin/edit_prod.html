@@ -1,0 +1,59 @@
+{% extends 'magasin/admin.html' %}
+{% block title %} Catalogue de produits {% endblock title %}
+{% block content %}
+<div class="container">
+    <h1>Modifier le Produit: {{ produit.libellé }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    </form>
+</div>
+<style>
+    /* Style pour le conteneur principal */
+.container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Style pour le titre */
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Style pour le formulaire */
+form {
+    max-width: 500px;
+}
+
+/* Style pour les champs de formulaire */
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Style pour le bouton */
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+</style>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'magasin/base.html' %}
+{% load static %}
+{% block title %} Catalogue de produits {% endblock title %}
+{% block content %}
+<!-- body -->
+<body style="background-color: #E4EBF4;">
+  
+</body>
+<div class="row justify-content-center" >
+    {% for product in products %}
+    <div class="col-md-3 mb-5" >
+      <div class="card" style="max-width: 300px;" >
+        <img src="{{product.img.url}}" class="card-img-top" alt="{{product.libellé}}" style="height:300px; width:300px" >
+        <div class="card-body" style="background-color: #b0c4df;">
+          <h5 class="card-title">{{product.libellé}}</h5>
+          <p class="card-text">{{product.description}}</p>
+          <p class="card-text"><small class="text-muted">{{product.prix}} Dt</small></p>
+          {% if user.is_authenticated %}
+          <form method="post" action="{% url 'magasin:soumettre_rating' product.id %}">
+            {% csrf_token %}
+            <div class="rate">
+              <input type="radio" id="star5_{{ product.id }}" name="rating" value="5" {% if product.rating == 5 %} checked {% endif %}/>
+              <label for="star5_{{ product.id }}" title="5 stars">5 stars</label>
+              <input type="radio" id="star4_{{ product.id }}" name="rating" value="4" {% if product.rating == 4 %} checked {% endif %}/>
+              <label for="star4_{{ product.id }}" title="4 stars">4 stars</label>
+              <input type="radio" id="star3_{{ product.id }}" name="rating" value="3" {% if product.rating == 3 %} checked {% endif %}/>
+              <label for="star3_{{ product.id }}" title="3 stars">3 stars</label>
+              <input type="radio" id="star2_{{ product.id }}" name="rating" value="2" {% if product.rating == 2 %} checked {% endif %}/>
+              <label for="star2_{{ product.id }}" title="2 stars">2 stars</label>
+              <input type="radio" id="star1_{{ product.id }}" name="rating" value="1" {% if product.rating == 1 %} checked {% endif %}/>
+              <label for="star1_{{ product.id }}" title="1 star">1 star</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Go!</button>
+          </form>
+          {% for rating in ratings %}
+          {{rating.valeur}}
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .rate {
+        float: left;
+        height: 46px;
+        padding: 0 10px;
+      }
+      .rate:not(:checked) > input {
+        position:absolute;
+        top:-9999px;
+      }
+      .rate:not(:checked) > label {
+        float:right;
+        width:1em;
+        overflow:hidden;
+        white-space:nowrap;
+        cursor:pointer;
+        font-size:30px;
+        color:#ccc;
+      }
+      .rate:not(:checked) > label:before {
+        content: '★ ';
+      }
+      .rate > input:checked ~ label {
+        color: #ffc700;    
+      }
+      .rate:not(:checked) > label:hover,
+      .rate:not(:checked) > label:hover ~ label {
+        color: #deb217;  
+      }
+      .rate > input:checked + label:hover,
+      .rate > input:checked + label:hover ~ label,
+      .rate > input:checked ~ label:hover,
+      .rate > input:checked ~ label:hover ~ label,
+      .rate > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+      }
+    </style>
+    {% endfor %}
+  </div>
+  {% endblock %}

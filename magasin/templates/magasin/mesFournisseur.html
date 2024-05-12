@@ -1,0 +1,25 @@
+{% extends 'magasin/admin.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center">Liste des Fournisseurs</h2>
+            <ul class="list-group">
+                {% for four in list %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="font-weight-bold">Nom:</span> {{ four.nom }}<br>
+                            <span class="font-weight-bold">Email:</span> {{ four.email }}<br>
+                            <span class="font-weight-bold">Téléphone:</span> {{ four.telephone }}<br>
+                            <span class="font-weight-bold">Adresse:</span> {{ four.adresse }}
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
